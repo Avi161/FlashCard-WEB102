@@ -6,17 +6,46 @@ import Card from './components/Card'
 
 import '@mui/material/styles';
 import Button from '@mui/material/Button';
-import { ArrowRight } from 'lucide-react';
+import TextField from '@mui/material/TextField';
+import { ArrowLeft, ArrowRight } from 'lucide-react';
 
 function App() {
   const [count, setCount] = useState(0)
+  const [submit, setSubmit] = useState(false)
+  const [userGuess, setUserGuess] = useState("")
+  const [feedback, setFeedback] = useState("")
 
-  function updateCount(){
+  function incrementCount(){
     if (count === cards.length-1){
-      setCount(0)
+      setCount(cards.length-1)
     } else {
       setCount(count+1)
     }
+  }
+
+  function decrementCount(){
+    if (count === 0){
+      setCount(0)
+    } else {
+      setCount(count-1)
+    }
+  }
+
+  function handleSubmit(e){
+    e.preventDefault()
+    const correctAnswer = cards[count].answer.toLowerCase()
+    const userAnswer = userGuess.toLowerCase()
+
+    if (userAnswer === correctAnswer){
+      setFeedback('Correct!!')
+    } else {
+      setFeedback('Incorrect!! Try again.')
+    }
+    setSubmit(true)
+  }
+
+  function updateChange(e){
+    setUserGuess(e.target.value)
   }
 
   const cards = [
@@ -44,7 +73,17 @@ function App() {
       {
         <Card key={count} question={cards[count].question} answer={cards[count].answer} />
       }
-      <Button onClick={updateCount}><ArrowRight /></Button>
+      <Button onClick={decrementCount}><ArrowLeft /></Button>
+      <Button onClick={incrementCount}><ArrowRight /></Button>
+      <form onSubmit={handleSubmit}>
+        <TextField variant="outlined" fullWidth
+          margin="normal" value={userGuess} onChange={updateChange}></TextField>
+        <Button type="submit" variant="contained">
+          Submit
+        </Button>
+      </form>
+
+      {feedback && <p>{feedback}</p>}
     </>
   )
 }

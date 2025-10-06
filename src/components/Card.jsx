@@ -1,9 +1,9 @@
 import { useState } from "react";
 import Button from '@mui/material/Button';
-import { ArrowRight } from 'lucide-react';
+import { ArrowUp } from 'lucide-react';
 
 function Card(props){
-    const [check, setCheck] = useState(false);
+    const [check, setCheck] = useState(true);
 
     function flip(){
         setCheck(!check);
@@ -12,8 +12,8 @@ function Card(props){
     return(
         <div className="card">
             <h2>Joke</h2>
-            <p>{check ? props.answer : props.question}</p>
-            <Button onClick={flip} variant="contained"><ArrowRight /></Button>
+            <p>{check ? props.question : props.answer}</p>
+            <Button onClick={flip} variant="contained">{check ? "Answer":"Question"}</Button>
         </div>
     );
 }
